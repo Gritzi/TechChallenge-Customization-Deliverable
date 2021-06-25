@@ -1,23 +1,60 @@
 // api.js
 const Hapi = require('@hapi/hapi')
 const mongoose = require('mongoose')
-const load_csv = require('./src/load_csv');
+const {loadCSV, insertData} = require('./src/load_csv');
+const data = require('./src/routes/data');
+const register = require('./src/routes/register');
+const hapi_basic_auth = require('@hapi/cookie');
+const Bcrypt = require('bcrypt');
+const User = require("../schemas/User");
 
 async function api(){
   try {
     
-    let server = Hapi.Server({ port: 8080 })
+    let server = Hapi.Server(
+      {
+         address: "0.0.0.0",
+         port: 8080, 
+         routes: {
+          cors: {
+              origin: ["*"]
+          }
+        }
+      }
+    )
     mongoose.connect('mongodb://mongo/rest_hapi', {useNewUrlParser: true});
-    const results = await load_csv();
-    console.log("here I am");
 
-    const schema = new mongoose.Schema({id: Number, name: String, wechselwirkungen_mit: [Number], verhindernde_krankheiten: [String], link_zu_pdf: String});
-    const Drug = mongoose.model('Drug', schema);
+    await server.register(hapi_cookie_auth);
+    server.auth.strategy('session', 'cookie', {
+      cookie: {
+          name: 'sid-example',
+          password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
+          isSecure: false
+      },
+      redirectTo: '/login',
+      validateFunc: async (request, session) => {
 
-    for (const res of results ) {
-      const query = {id: res.id};
-      await Drug.updateOne(query, res, {upsert: true});
-    }
+          const account = User.find({name: username});
+
+          if (!account) {
+
+              return { valid: false };
+          }
+
+          return { valid: true, credentials: account };
+      }
+      });
+    
+    server.auth.default('session');
+
+    const results = await loadCSV();
+    await insertData(results);
+
+    server.route(data)
+
+    server.route(register)
+
+    server.route(login);
 
     await server.start()
 

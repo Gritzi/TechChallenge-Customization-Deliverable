@@ -1,6 +1,8 @@
 const fs = require('fs')
 const { finished } = require('stream/promises');
 const parse = require('csv-parse');
+const mongoose = require('mongoose')
+const Drug = require('./schemas/Drug');
 
 
 async function loadCSV() {
@@ -27,4 +29,13 @@ async function loadCSV() {
     return results;
 }
 
-module.exports = loadCSV;
+async function insertData(data) {
+    for (const res of data ) {
+      const query = {id: res.id};
+      await Drug.updateOne(query, res, {upsert: true});
+    }
+
+}
+
+
+module.exports = {loadCSV, insertData};
