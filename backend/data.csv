@@ -1,0 +1,11 @@
+id,name,wechselwirkungen_mit,verhindernde_krankheiten,link_zu_pdf
+1,Aspirin (ASS),2,Pregnancy,https://www.aspirin.de/sites/g/files/vrxlpx15691/files/2021-03/aspirin-500mg-ueberzogene-tabletten-beipackzettel.pdf
+2,Marcumar (Phenprocoumon),1,,https://www.medikamente-per-klick.de/images/ecommerce/05/54/05541338_2010-11_de_o.pdf
+3,Ibuprofen,4,,https://shop.apotal.de/images/products/apotal/beipackzettel/07728561.pdf
+4,Cortisonum (Cortison),3,,https://d.otto.de/files/18841666.pdf
+5,Laif 900 (St. John's wort),6,,https://www.laif900balance.de/sites/g/files/vrxlpx21406/files/2021-02/laif-900-balance-beipackzettel.pdf
+6,Valette (Birth control pill),5,,https://downloads.dokteronline.com/leaflets/de/patient_information_leaflet-2293-valette-de.pdf-1510756566.pdf
+7,BioNTech (Covid-19 Vaccine),,Pregnancy,https://www.ema.europa.eu/en/documents/product-information/comirnaty-epar-product-information_de.pdf
+8,AstraZeneca (Covid-19 Vaccine),,Pregnancy,https://www.kvberlin.de/fileadmin/user_upload/Themen/covid_19_impfdienste/astraZeneca_fachinformationen.pdf
+9,Johnson & Johnson (Covid-19 Vaccine),,Pregnancy,https://www.basg.gv.at/fileadmin/redakteure/05_KonsumentInnen/Impfstoffe/Gebrauchsinformation_COVID-19_Vaccine_Janssen.pdf
+10,Moderna (Covid-19 Vaccine),,Pregnancy,https://www.basg.gv.at/fileadmin/redakteure/03_amtlicheNachrichten/Kurzmeldungen/Gebrauchsinformation_COVID-19_Vaccine_Moderna.pdf
