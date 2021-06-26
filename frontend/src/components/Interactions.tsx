@@ -2,9 +2,13 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import cx from 'classnames';
 import {Button, Modal, Content, FormGroup, ComboBox, InlineNotification, MultiSelect, SideNavItems} from 'carbon-components-react';
 import axios from 'axios';
+import { api_base_address } from '../util/backend_adress';
 
 export interface InteractionsProps {
-  userData?: {};
+  userData?: {
+    drugs: number[],
+    conditions: string[]
+  };
 }
 
 
@@ -45,7 +49,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
     const [key, setKey] = useState(0);
 
     useEffect(() => {
-      axios.get("http://0.0.0.0:8080/data").then(res => setData(res.data));   
+      axios.get( "http://127.0.0.1:8080/data").then(res => setData(res.data));   
     }, [])
 
 
@@ -63,7 +67,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
     const initialSelectedConditions = useMemo(() => {
       setKey(key + 1);
       if(data) {
-        const initial = userData?.conditions;
+        const initial = userData?.conditions ?? [];
         setselectedAilments(initial);
         return initial;
       } else {
@@ -73,7 +77,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
 
     const setUserData = (drugs: string[], conditions: string[]) => {
     
-      axios.post("http://localhost:8080/updateData", {
+      axios.post( api_base_address + "updateData", {
           drugs,
           conditions
       }, {withCredentials: true}).then(() => {}).catch((err => {

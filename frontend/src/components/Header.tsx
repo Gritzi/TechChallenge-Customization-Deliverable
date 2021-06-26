@@ -6,6 +6,7 @@ import {Login20, Task20} from '@carbon/icons-react';
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {api_base_address} from '../util/backend_adress';
 
 export interface HeaderProps {
   setPossibleUserData: (data: any) => void;
@@ -29,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   })
 
   const goRegister = () => {
-    axios.post("http://localhost:8080/register", {
+    axios.post("http://127.0.0.1:8080/register", {
       username: credentials.username,
       password: credentials.password
     }).then((res) => {
@@ -42,7 +43,8 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   }
 
   const goLogin = () => {
-    axios.post("http://localhost:8080/login", {
+
+    axios.post("http://127.0.0.1:8080/login", {
       username: credentials.username,
       password: credentials.password
     }, {
@@ -59,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   }
 
   const getUserData = () => {
-    axios.get("http://localhost:8080/userdata", {
+    axios.get("http://127.0.0.1:8080/userdata", {
       withCredentials: true
     }).then(res => setPossibleUserData(res.data))
   }

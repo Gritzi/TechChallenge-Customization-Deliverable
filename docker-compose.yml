@@ -33,3 +33,13 @@ services:
       - "8080:8080"
     links:
       - mongo
+
+  frontend: 
+    build: ./frontend
+    ports:
+      - "80:80"
+    expose: 
+      - "80"
+    links:
+      - backend
+

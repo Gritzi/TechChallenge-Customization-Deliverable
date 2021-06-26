@@ -6,6 +6,9 @@ import {Interactions} from '../components/Interactions';
 import { Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
+// @ts-ignore
+window.axios = axios;
+
 export const Main = () => {
 
     const [possibleUserData, setPossibleUserData] = useState();

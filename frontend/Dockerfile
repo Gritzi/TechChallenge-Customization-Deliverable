@@ -1,5 +1,6 @@
 # pull official base image
-FROM node:16
+# BUILD Step
+FROM node:16 as builder
 
 # set working directory
 WORKDIR /app
@@ -17,7 +18,24 @@ COPY . ./
 
 RUN npm run build
 
-EXPOSE 3000
 
-# start app
-CMD [ "http-server", "dist" ]
+# pull official base image
+# Prod step
+FROM node:16 as runner
+
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm install --global http-server
+
+EXPOSE 80
+
+COPY --from=builder /app/dist .
+
+COPY --from=builder /app/debug.sh .
+
+RUN ./debug.sh
+
+CMD [ "http-server", ".", "-p 80"]

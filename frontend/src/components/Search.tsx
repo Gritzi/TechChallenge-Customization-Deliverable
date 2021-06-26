@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import cx from 'classnames';
 import {Button, Modal, Content, Search as CSearch, ComboBox} from 'carbon-components-react';
 import axios from "axios";
+import { api_base_address } from '../util/backend_adress';
 
 export const Search = ({ useResponsiveOffset = true }) => {
 
@@ -9,7 +10,7 @@ export const Search = ({ useResponsiveOffset = true }) => {
     const [selectedItem, setSelectedItem] = useState<any>(undefined);
 
     useEffect(() => {
-      axios.get("http://0.0.0.0:8080/data").then(res => setData(res.data));
+      axios.get( "http://127.0.0.1:8080/data").then(res => setData(res.data));
       
     }, [])
 
