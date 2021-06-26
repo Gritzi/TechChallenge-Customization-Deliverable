@@ -1,43 +1,50 @@
-const Bcrypt = require('bcrypt');
 const Hapi = require('@hapi/hapi');
 const mongoose = require("mongoose");
 const User = require("../schemas/User");
-
-const validate = async (request, username, password) => {
-
-    const user = User.find({name: username});
-    if (!user) {
-        return { credentials: null, isValid: false };
-    }
-
-    const isValid = await Bcrypt.compare(password, user.password);
-    const credentials = { id: user.id, name: user.name };
-
-    return { isValid, credentials };
-};
+const Bcrypt = require("bcrypt");
 
 const login = {
     method: 'POST',
     path: '/login',
+    options: {
+        auth: {
+            mode: 'try'
+        },
+        cors: true
+    },
+
     handler: async (request, h) => {
 
+        if(!request.payload) {
+            return h.response("Invalid Payload").code(403);
+        }
+
         const { username, password } = request.payload;
-        const account = User.find({name: username});
+
+        if(!username) {
+            return h.response("No Username given").code(403);
+        }
+
+        if(!password) {
+            return h.response("No Username given").code(403);
+        }
+
+        let account;
+        try {
+            account = await User.findOne({name: username});
+        } catch(err) {
+            console.log(err);
+        }
 
         if (!account || !(await Bcrypt.compare(password, account.password))) {
 
-            return h.view('/login');
+            return h.response("Wrong password").code(403);
         }
 
-        request.cookieAuth.set({ id: account.id });
+        request.cookieAuth.set({ username: account.username });
 
-        return h.redirect('/');
+        return h.response("").code(200);
      },
-     options: {
-         auth: {
-             mode: 'try'
-         }
-     }
 }
 
 module.exports = login;

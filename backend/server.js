@@ -1,17 +1,16 @@
 // api.js
+const Bcrypt = require('bcrypt');
 const Hapi = require('@hapi/hapi')
 const mongoose = require('mongoose')
 const {loadCSV, insertData} = require('./src/load_csv');
-const data = require('./src/routes/data');
-const register = require('./src/routes/register');
-const hapi_basic_auth = require('@hapi/cookie');
-const Bcrypt = require('bcrypt');
-const User = require("../schemas/User");
+const {data, login, getUserData, register} = require('./src/routes');
+const hapi_cookie_auth = require('@hapi/cookie');
+const User = require("./src/schemas/User");
 
 async function api(){
   try {
     
-    let server = Hapi.Server(
+    let server = new Hapi.Server(
       {
          address: "0.0.0.0",
          port: 8080, 
@@ -27,22 +26,23 @@ async function api(){
     await server.register(hapi_cookie_auth);
     server.auth.strategy('session', 'cookie', {
       cookie: {
-          name: 'sid-example',
+          name: 'sid',
           password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
           isSecure: false
       },
-      redirectTo: '/login',
       validateFunc: async (request, session) => {
 
-          const account = User.find({name: username});
 
-          if (!account) {
+        console.log("Session", session);
+        const account = User.find({name: session.username});
 
-              return { valid: false };
-          }
+        if (!account) {
 
-          return { valid: true, credentials: account };
-      }
+            return { valid: false };
+        }
+
+        return { valid: true, credentials: account };
+      },
       });
     
     server.auth.default('session');
@@ -55,6 +55,8 @@ async function api(){
     server.route(register)
 
     server.route(login);
+
+    server.route(getUserData);
 
     await server.start()
 

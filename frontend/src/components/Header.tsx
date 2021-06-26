@@ -2,7 +2,7 @@
  /* tslint:disable */
 
 import {Header as UIHeader, HeaderName, HeaderMenuItem, HeaderNavigation, HeaderMenu, HeaderGlobalBar, HeaderGlobalAction, HeaderPanel, Switcher, SwitcherItem, SwitcherDivider, TextInput, Button} from 'carbon-components-react';
-import {Search20, Login20, Task20} from '@carbon/icons-react';
+import {Login20, Task20} from '@carbon/icons-react';
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
@@ -22,14 +22,22 @@ export const Header = () => {
     axios.post("http://0.0.0.0:8080/register", {
       username: credentials.username,
       password: credentials.password
-    });
+    }).then(() => {});
   }
 
   const goLogin = () => {
     axios.post("http://0.0.0.0:8080/login", {
       username: credentials.username,
       password: credentials.password
-    });
+    }, {
+      withCredentials: true
+    }).then(() => getUserData());
+  }
+
+  const getUserData = () => {
+    axios.get("http://0.0.0.0:8080/login", {
+      withCredentials: true
+    }).then(data => console.log(data))
   }
 
     return (
@@ -46,13 +54,13 @@ export const Header = () => {
           <Link style={{color: "white", textDecoration: "none"}} to='/interactions'> Find Drug Interaction</Link></HeaderMenuItem>
         </HeaderNavigation>
       <HeaderGlobalBar>
-      <HeaderGlobalAction aria-label="Search" onClick={() => {
+      <HeaderGlobalAction aria-label="Login" onClick={() => {
         setIsOpen(!isOpen);
         setIsRegisterOpen(false)
       }}>
           <Login20 />
         </HeaderGlobalAction>
-      <HeaderGlobalAction aria-label="Search" onClick={() => {setIsRegisterOpen(!isRegisterOpen); setIsOpen(false)}}>
+      <HeaderGlobalAction aria-label="Register" onClick={() => {setIsRegisterOpen(!isRegisterOpen); setIsOpen(false)}}>
           <Task20 />
         </HeaderGlobalAction>
       </HeaderGlobalBar>

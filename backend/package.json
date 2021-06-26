@@ -9,9 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/cookie": "11.0.2",
     "@hapi/hapi": "20.1.4",
     "bcrypt": "5.0.1",
     "csv-parse": "4.16.0",
-    "mongoose": "5.12.14"
+    "mongoose": "5.12.14",
+    "typescript": "4.3.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "5.0.0",
+    "@types/hapi": "18.0.5",
+    "@types/hapi__cookie": "10.1.2",
+    "@types/mongoose": "5.11.97"
   }
 }

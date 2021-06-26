@@ -1,30 +1,48 @@
 const mongoose = require('mongoose')
 const User = require("../schemas/User");
+const Bcrypt = require("bcrypt");
 
 
 module.exports = {
     method: "POST",
-    path: '/register/',
+    path: '/register',
     options: {
       cors: true,
-      auth: false,
+      auth: {
+        mode: 'optional'
+      },
     },
-    handler: (request, h) => {
- 
-      const { user, password } = request.payload;
+    handler: async (request, h) => {
 
-      if(user && password) {
-        const exists = User.find({name: user});
-        if(!exists) {
-            User.create({name: user, password: password}, function (err) {
-                console.log(err);
-                return h.response("Error creating user").code(201);
-            });
-            return h.response().code(200);
-        } 
-        return h.response("User with name " + user + " already exists!").code(201);
+      if(!request.payload) {
+        return h.response("No Payload received").code(201)
       }
-      
-      return data;
+ 
+      const { username, password } = request.payload;
+
+      if(!username) {
+        return h.response("No Username received").code(201)
+      }
+
+      if(!password) {
+        return h.response("No Password received").code(201)
+      }
+
+
+     
+      const exists = await User.exists({name: username});s
+      if(!exists) {
+
+          try {
+            const hash = await Bcrypt.hash(password, 5);
+            await User.create({name: username, password: hash});
+          } catch (err) {
+            console.log(err);
+            return h.response("Error creating user").code(201);
+          }
+
+          return h.response("Successfully registered!").code(200);
+      } 
+      return h.response("User with name " + username + " already exists!").code(201);
     }
   }
