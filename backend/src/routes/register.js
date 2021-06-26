@@ -30,7 +30,7 @@ module.exports = {
 
 
      
-      const exists = await User.exists({name: username});s
+      const exists = await User.exists({name: username});
       if(!exists) {
 
           try {

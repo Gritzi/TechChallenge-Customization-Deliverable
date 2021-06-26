@@ -156,7 +156,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
                 <ComboBox
                   onChange={si => setTargetInterestItem(si.selectedItem)}
                   id="carbon-combobox"
-                  items={data}
+                  items={data.filter(item => selectedItems.indexOf(item) === -1)}
                   itemToString={(item) => (item ? item.name : '')}
                   placeholder="Filter..."
                   titleText="I am interested in the following medication..."

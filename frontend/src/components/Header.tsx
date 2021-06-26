@@ -16,8 +16,11 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [loginClickedState, setLoginClickedState] = useState<"success" | "fail" | undefined>();
+  const [registerClickedState, setRegisterClickedState] = useState<"success" | "fail" | undefined>();
   const [loginMessage, setLoginMessage] = useState("");
   const [loggedInUsername, setLoggedInUsername] = useState("");
+
+  const [registerMessage, setRegisterMessage] = useState("");
 
 
   const [credentials, setCredentials] = useState({
@@ -29,7 +32,13 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
     axios.post("http://localhost:8080/register", {
       username: credentials.username,
       password: credentials.password
-    }).then(() => {});
+    }).then((res) => {
+      setRegisterMessage(res.data);
+      setRegisterClickedState("success");
+    }).catch(err => {
+      setRegisterMessage(err.response.data);
+      setRegisterClickedState("fail");
+    });
   }
 
   const goLogin = () => {
@@ -126,7 +135,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
           </Button>
 
           {
-            loginClickedState && <InlineNotification style={{width: "80%"}} kind={loginClickedState === "success" ? "info" : "error"} title={loginMessage} onCloseButtonClick={() => setLoginClickedState()}/>
+            loginClickedState && <InlineNotification style={{width: "80%"}} kind={loginClickedState === "success" ? "info" : "error"} title={loginMessage} onCloseButtonClick={() => setLoginClickedState(undefined)}/>
           }
         
       </Switcher>
@@ -177,6 +186,9 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
           }} onClick={goRegister}>
             Register
           </Button>
+          {
+            registerClickedState && <InlineNotification style={{width: "80%"}} kind={registerClickedState === "success" ? "info" : "error"} title={registerMessage} onCloseButtonClick={() => setRegisterClickedState(undefined)}/>
+          }
         
       </Switcher>
     </HeaderPanel>
