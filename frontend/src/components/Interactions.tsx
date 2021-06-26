@@ -49,7 +49,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
     const [key, setKey] = useState(0);
 
     useEffect(() => {
-      axios.get( "http://127.0.0.1:8080/data").then(res => setData(res.data));   
+      axios.get( api_base_address + "data").then(res => setData(res.data));   
     }, [])
 
 

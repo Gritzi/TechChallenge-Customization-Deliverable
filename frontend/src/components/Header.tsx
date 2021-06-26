@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   })
 
   const goRegister = () => {
-    axios.post("http://127.0.0.1:8080/register", {
+    axios.post(api_base_address + "register", {
       username: credentials.username,
       password: credentials.password
     }).then((res) => {
@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
 
   const goLogin = () => {
 
-    axios.post("http://127.0.0.1:8080/login", {
+    axios.post(api_base_address + "login", {
       username: credentials.username,
       password: credentials.password
     }, {
@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   }
 
   const getUserData = () => {
-    axios.get("http://127.0.0.1:8080/userdata", {
+    axios.get(api_base_address + "userdata", {
       withCredentials: true
     }).then(res => setPossibleUserData(res.data))
   }

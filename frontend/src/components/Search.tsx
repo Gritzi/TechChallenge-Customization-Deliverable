@@ -10,7 +10,7 @@ export const Search = ({ useResponsiveOffset = true }) => {
     const [selectedItem, setSelectedItem] = useState<any>(undefined);
 
     useEffect(() => {
-      axios.get( "http://127.0.0.1:8080/data").then(res => setData(res.data));
+      axios.get( api_base_address + "data").then(res => setData(res.data));
       
     }, [])
 
