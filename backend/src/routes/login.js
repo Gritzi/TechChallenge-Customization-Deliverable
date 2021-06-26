@@ -41,9 +41,9 @@ const login = {
             return h.response("Wrong password").code(403);
         }
 
-        request.cookieAuth.set({ username: account.username });
+        request.cookieAuth.set({ username: account.name, id: account.id });
 
-        return h.response("").code(200);
+        return h.response("Successfully authenticated").code(200);
      },
 }
 

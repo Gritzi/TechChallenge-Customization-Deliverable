@@ -24,6 +24,7 @@ async function api(){
     mongoose.connect('mongodb://mongo/rest_hapi', {useNewUrlParser: true});
 
     await server.register(hapi_cookie_auth);
+
     server.auth.strategy('session', 'cookie', {
       cookie: {
           name: 'sid',
@@ -34,14 +35,14 @@ async function api(){
 
 
         console.log("Session", session);
-        const account = User.find({name: session.username});
+        const account = await User.findOne({name: session.username});
 
         if (!account) {
 
             return { valid: false };
         }
 
-        return { valid: true, credentials: account };
+        return { valid: true, credentials: {username: account.name, id: account.id} };
       },
       });
     

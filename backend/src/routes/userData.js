@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const User = require("../schemas/User");
 
 module.exports = {
     method: "GET",
@@ -9,15 +10,15 @@ module.exports = {
         mode: 'required'
       }
     },
-    handler: (request, h) => {
+    handler: async (request, h) => {
       const username = request?.auth?.credentials?.username;
       console.log("Credentials", request?.auth?.credentials);
       if(username) {
         console.log(username);
       }
-      const Drug = mongoose.model("Drug");
-      const data = Drug.find();
-      
-      return data;
+
+      const user = await User.findOne({name: username}).select('name drugs');
+
+      return user;
     }
   }
