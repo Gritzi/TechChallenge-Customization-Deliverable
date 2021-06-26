@@ -10,7 +10,10 @@ const login = {
         auth: {
             mode: 'try'
         },
-        cors: true
+        cors: {
+            origin: ['*'],
+            credentials: true
+        }
     },
 
     handler: async (request, h) => {

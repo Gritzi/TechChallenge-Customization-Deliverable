@@ -19,14 +19,14 @@ export const Header = () => {
   })
 
   const goRegister = () => {
-    axios.post("http://0.0.0.0:8080/register", {
+    axios.post("http://localhost:8080/register", {
       username: credentials.username,
       password: credentials.password
     }).then(() => {});
   }
 
   const goLogin = () => {
-    axios.post("http://0.0.0.0:8080/login", {
+    axios.post("http://localhost:8080/login", {
       username: credentials.username,
       password: credentials.password
     }, {
@@ -35,7 +35,7 @@ export const Header = () => {
   }
 
   const getUserData = () => {
-    axios.get("http://0.0.0.0:8080/login", {
+    axios.get("http://localhost:8080/userdata", {
       withCredentials: true
     }).then(data => console.log(data))
   }

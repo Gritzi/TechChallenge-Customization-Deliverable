@@ -3,7 +3,7 @@ const Bcrypt = require('bcrypt');
 const Hapi = require('@hapi/hapi')
 const mongoose = require('mongoose')
 const {loadCSV, insertData} = require('./src/load_csv');
-const {data, login, getUserData, register} = require('./src/routes');
+const {data, login, getUserData, register, updateData} = require('./src/routes');
 const hapi_cookie_auth = require('@hapi/cookie');
 const User = require("./src/schemas/User");
 
@@ -16,7 +16,8 @@ async function api(){
          port: 8080, 
          routes: {
           cors: {
-              origin: ["*"]
+              origin: ["*"],
+              credentials: true
           }
         }
       }
@@ -29,7 +30,7 @@ async function api(){
       cookie: {
           name: 'sid',
           password: '!wsYhFA*C2U6nz=Bu^%A@^F#SF3&kSR6',
-          isSecure: false
+          isSecure: false,
       },
       validateFunc: async (request, session) => {
 
@@ -58,6 +59,8 @@ async function api(){
     server.route(login);
 
     server.route(getUserData);
+
+    server.route(updateData);
 
     await server.start()
 
