@@ -31,7 +31,7 @@ module.exports = {
 
       await user.save();
 
-      h.response("Updated user").code(200);
+      return h.response("Updated user").code(200);
 
     }
   }

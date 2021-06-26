@@ -17,7 +17,7 @@ module.exports = {
         console.log(username);
       }
 
-      const user = await User.findOne({name: username}).select('name drugs');
+      const user = await User.findOne({name: username}).select('name drugs conditions');
 
       return user;
     }

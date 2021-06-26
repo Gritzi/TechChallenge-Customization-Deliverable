@@ -1,16 +1,23 @@
 
  /* tslint:disable */
 
-import {Header as UIHeader, HeaderName, HeaderMenuItem, HeaderNavigation, HeaderMenu, HeaderGlobalBar, HeaderGlobalAction, HeaderPanel, Switcher, SwitcherItem, SwitcherDivider, TextInput, Button} from 'carbon-components-react';
+import {Header as UIHeader, HeaderName, HeaderMenuItem, HeaderNavigation, HeaderMenu, InlineNotification, HeaderGlobalBar, HeaderGlobalAction, HeaderPanel, Switcher, SwitcherItem, SwitcherDivider, TextInput, Button} from 'carbon-components-react';
 import {Login20, Task20} from '@carbon/icons-react';
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 
-export const Header = () => {
+export interface HeaderProps {
+  setPossibleUserData: (data: any) => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [loginClickedState, setLoginClickedState] = useState<"success" | "fail" | undefined>();
+  const [loginMessage, setLoginMessage] = useState("");
+  const [loggedInUsername, setLoggedInUsername] = useState("");
 
 
   const [credentials, setCredentials] = useState({
@@ -31,13 +38,21 @@ export const Header = () => {
       password: credentials.password
     }, {
       withCredentials: true
-    }).then(() => getUserData());
+    }).then((res) => {
+      setLoginClickedState("success");
+      getUserData();
+      setLoginMessage(res.data);
+      setLoggedInUsername(credentials.username);
+    }).catch(err => {
+      setLoginClickedState("fail");
+      setLoginMessage(err.response.data)
+    });
   }
 
   const getUserData = () => {
     axios.get("http://localhost:8080/userdata", {
       withCredentials: true
-    }).then(data => console.log(data))
+    }).then(res => setPossibleUserData(res.data))
   }
 
     return (
@@ -54,6 +69,9 @@ export const Header = () => {
           <Link style={{color: "white", textDecoration: "none"}} to='/interactions'> Find Drug Interaction</Link></HeaderMenuItem>
         </HeaderNavigation>
       <HeaderGlobalBar>
+      {
+        loggedInUsername && <HeaderName prefix="">Hello, {loggedInUsername}</HeaderName>
+      }
       <HeaderGlobalAction aria-label="Login" onClick={() => {
         setIsOpen(!isOpen);
         setIsRegisterOpen(false)
@@ -106,6 +124,10 @@ export const Header = () => {
           }} onClick={goLogin}>
             Login
           </Button>
+
+          {
+            loginClickedState && <InlineNotification style={{width: "80%"}} kind={loginClickedState === "success" ? "info" : "error"} title={loginMessage} onCloseButtonClick={() => setLoginClickedState()}/>
+          }
         
       </Switcher>
     </HeaderPanel>
