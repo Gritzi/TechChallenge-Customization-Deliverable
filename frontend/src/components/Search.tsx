@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import cx from 'classnames';
 import {Button, Modal, Content, Search as CSearch, ComboBox} from 'carbon-components-react';
 import axios from "axios";
-import { api_base_address } from '../util/backend_adress';
+import { api_base_address, calcEndpoint } from '../util/backend_adress';
 
 export const Search = ({ useResponsiveOffset = true }) => {
 
@@ -10,7 +10,7 @@ export const Search = ({ useResponsiveOffset = true }) => {
     const [selectedItem, setSelectedItem] = useState<any>(undefined);
 
     useEffect(() => {
-      axios.get( api_base_address + "data").then(res => setData(res.data));
+      axios.get( calcEndpoint("data")).then(res => setData(res.data));
       
     }, [])
 
@@ -22,7 +22,7 @@ export const Search = ({ useResponsiveOffset = true }) => {
       <div className="bx--grid" style={{height: '100%'}}>
         <div className="bx--row">
           <div style={{width: '100%', height: '100%'}}>
-            <h2 style={{ margin: '0 0 30px' }}>Search for PIsL</h2>
+            <h2 style={{ margin: '0 0 30px' }}>Search for PIL</h2>
             <ComboBox
               onChange={onChange}
               id="carbon-combobox"

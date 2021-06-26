@@ -6,7 +6,7 @@ import {Login20, Task20} from '@carbon/icons-react';
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
-import {api_base_address} from '../util/backend_adress';
+import {api_base_address, calcEndpoint} from '../util/backend_adress';
 
 export interface HeaderProps {
   setPossibleUserData: (data: any) => void;
@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   })
 
   const goRegister = () => {
-    axios.post(api_base_address + "register", {
+    axios.post(calcEndpoint("register"), {
       username: credentials.username,
       password: credentials.password
     }).then((res) => {
@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
 
   const goLogin = () => {
 
-    axios.post(api_base_address + "login", {
+    axios.post(calcEndpoint("login"), {
       username: credentials.username,
       password: credentials.password
     }, {
@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
   }
 
   const getUserData = () => {
-    axios.get(api_base_address + "userdata", {
+    axios.get(calcEndpoint("userdata"), {
       withCredentials: true
     }).then(res => setPossibleUserData(res.data))
   }
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({setPossibleUserData}) => {
       </HeaderName>
       <HeaderNavigation aria-label="IBM [Platform]">
           <HeaderMenuItem>
-            <Link style={{color: "white", textDecoration: "none"}} to='/'> Find PIL</Link>
+            <Link style={{color: "white", textDecoration: "none"}} to='/'> Find a PIL</Link>
           </HeaderMenuItem>
           <HeaderMenuItem>
           <Link style={{color: "white", textDecoration: "none"}} to='/interactions'> Find Drug Interaction</Link></HeaderMenuItem>

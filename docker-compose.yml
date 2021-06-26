@@ -42,6 +42,4 @@ services:
       - "80"
     links:
       - backend
-    volumes:
-      - ./frontend:/app  # <--  THIS line enables hot code reloading!
 

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import cx from 'classnames';
 import {Button, Modal, Content, FormGroup, ComboBox, InlineNotification, MultiSelect, SideNavItems} from 'carbon-components-react';
 import axios from 'axios';
-import { api_base_address } from '../util/backend_adress';
+import { api_base_address, calcEndpoint } from '../util/backend_adress';
 
 export interface InteractionsProps {
   userData?: {
@@ -49,7 +49,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
     const [key, setKey] = useState(0);
 
     useEffect(() => {
-      axios.get( api_base_address + "data").then(res => setData(res.data));   
+      axios.get( calcEndpoint("data")).then(res => setData(res.data));   
     }, [])
 
 
@@ -77,7 +77,7 @@ export const Interactions: React.FC<InteractionsProps> = ({userData = {}}) => {
 
     const setUserData = (drugs: string[], conditions: string[]) => {
     
-      axios.post( api_base_address + "updateData", {
+      axios.post( calcEndpoint("updateData"), {
           drugs,
           conditions
       }, {withCredentials: true}).then(() => {}).catch((err => {
