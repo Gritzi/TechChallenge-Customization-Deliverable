@@ -22,7 +22,7 @@ export const Search = ({ useResponsiveOffset = true }) => {
       <div className="bx--grid" style={{height: '100%'}}>
         <div className="bx--row">
           <div style={{width: '100%', height: '100%'}}>
-            <h2 style={{ margin: '0 0 30px' }}>Search for PIL</h2>
+            <h2 style={{ margin: '0 0 30px' }}>Search for PIsL</h2>
             <ComboBox
               onChange={onChange}
               id="carbon-combobox"
