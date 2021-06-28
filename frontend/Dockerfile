@@ -34,8 +34,4 @@ EXPOSE 80
 
 COPY --from=builder /app/dist .
 
-COPY --from=builder /app/debug.sh .
-
-RUN ./debug.sh
-
 CMD [ "http-server", ".", "-p 80"]
